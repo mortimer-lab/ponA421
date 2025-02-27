@@ -96,5 +96,10 @@ ng_pcn <- ng_pcn %>% filter(penA != "unknown")
 ng_pcn %>% write_tsv("../data/pcn_res_alleles_metadata.tsv")
 
 # combined all metadata will resistance alleles to include isolates without penicillin MICs
-ponA_421_dates <- ng_metadata %>% left_join(resistance_all) %>% filter(!is.na(PBP1_421)) %>% separate(date, c("Year", "Month", "Day", "-")) %>% select(wgs_id, Year, PBP1_421) %>% filter(!Year %in% c("01", "02", "03", "04", "05", "06"))
+ponA_421_dates <- ng_metadata %>% left_join(resistance_all) %>% filter(!is.na(PBP1_421)) %>% separate(date, c("Year", "Month", "Day"), "-") %>% select(wgs_id, Year, PBP1_421) %>% filter(!Year %in% c("01", "02", "03", "04", "05", "06"))
 ponA_421_dates %>% count(Year, PBP1_421) %>% filter(!is.na(Year)) %>% write_tsv("../data/ponA_alleles_by_year.tsv")
+
+# combined all metadata will resistance alleles to include isolates without penicillin MICs and analyize codon 345 insertion
+penA_345ins_dates <- ng_metadata %>% left_join(resistance_all) %>% filter(!is.na(penA_345ins)) %>% separate(date, c("Year", "Month", "Day"), "-") %>% select(wgs_id, Year, penA_345ins) %>% filter(!Year %in% c("01", "02", "03", "04", "05", "06"))
+penA_345ins_dates %>% count(Year, penA_345ins) %>% filter(!is.na(Year)) %>% write_tsv("../data/penA_345_alleles_by_year.tsv")
+
